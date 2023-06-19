@@ -1,0 +1,58 @@
+.App {
+  color: #141414;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.App .Breadcrumb {
+  color: white;
+  padding: 30px;
+  margin-bottom: 50px;
+  background-color: #141414;
+}
+
+.App .Breadcrumb span {
+  cursor: pointer;
+}
+
+.App .Breadcrumb span:not(:last-child)::after {
+  content: " > ";
+  color: #0b68ff;
+  font-weight: bold;
+  font-size: 20px;
+  position: relative;
+  top: 2px;
+}
+
+.App .Breadcrumb span:hover {
+  color: #0b68ff;
+}
+
+.App .Details {
+  position: fixed;
+  bottom: 0;
+  margin-top: 20px;
+  padding: 20px;
+  height: 20vh;
+  background-color: #141414;
+  color: white;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.App .Details span {
+  font-weight: bold;
+  color: #0b68ff;
+}
+
+@media (max-width: 600px) {
+  .App .Breadcrumb {
+    max-height: 90px;
+    overflow-y: auto;
+  }
+}

@@ -1,20 +1,55 @@
-.dynamicTable{
-    width: 90%;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    font-size: 18px;
-    color: #141414;
-    margin: 0 auto;
+.dynamicTable {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  color: #141414;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  width: 100%;
 }
 
-.dynamicTable thead tr{
-    background-color: #141414;
-    color: #fff;
-    text-align: center;
+.tableContainer {
+  width: 90%;
+  margin: 0 auto;
+  height: 100%;
 }
 
-.dynamicCell{
-    padding: 12px 15px;
-    text-align: center;
-    border: 1px solid #ddd;
+th {
+  color: #0b68ff;
+  width: 25%;
+  max-width: 200px;
+}
+
+.dynamicTable thead tr {
+  background-color: #141414;
+  color: #fff;
+  text-align: center;
+}
+
+.dynamicCell {
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+td {
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  tbody {
+    overflow-x: auto;
+  }
+  .tableContainer {
+    height: 600px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
 }

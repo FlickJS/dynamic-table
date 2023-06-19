@@ -1,7 +1,5 @@
 import React from "react";
 
-import classes from "../assets/Breadcrumb.module.css";
-
 interface BreadcrumbProps {
   path: string[];
   onNavigate: (index: number) => void;

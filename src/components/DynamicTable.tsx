@@ -8,6 +8,7 @@ export interface Row {
   id: string;
   title: string;
   authors: string;
+  kind: string;
 }
 
 interface DynamicTableProps {
@@ -17,11 +18,16 @@ interface DynamicTableProps {
 const DynamicTable: React.FC<DynamicTableProps> = ({ onRowClick }) => {
   const [data, setData] = useState<Row[]>([]);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await fetchData();
-      setData(data);
+      const result = await fetchData();
+      if (result.error) {
+        setError("FAILED TO FETCH DATA");
+      } else if (result.data) {
+        setData(result.data);
+      }
     };
 
     getData();
@@ -32,7 +38,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ onRowClick }) => {
       { Header: "ID", accessor: "id" },
       { Header: "Title", accessor: "title" },
       { Header: "Authors", accessor: "authors" },
-      // Add other relevant fields
+      { Header: "Kind", accessor: "kind" },
     ],
     []
   );
@@ -40,42 +46,56 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ onRowClick }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
-  return (
-    <table {...getTableProps()} className={classes.dynamicTable}>
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <tr
-              {...row.getRowProps()}
-              style={{
-                background:
-                  row.original.id === selectedRowId ? "#141414" : "white",
-                color: row.original.id === selectedRowId ? "#0B68FF" : "black",
-              }}
-              onClick={() => {
-                setSelectedRowId(row.original.id);
-                onRowClick(row.original);
-              }}
+  if (error) {
+    return <div className={classes.error}>{error}</div>;
+  }
 
-            >
-              {row.cells.map((cell) => (
-                <td {...cell.getCellProps()} className={classes.dynamicCell}>{cell.render("Cell")}</td>
+  return (
+    <div className={classes.tableContainer}>
+      <table
+        {...getTableProps()}
+        className={classes.dynamicTable}
+        style={{
+          overflowX: "scroll",
+        }}
+      >
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr
+                {...row.getRowProps()}
+                style={{
+                  background:
+                    row.original.id === selectedRowId ? "#141414" : "white",
+                  color:
+                    row.original.id === selectedRowId ? "white" : "#141414",
+                }}
+                onClick={() => {
+                  setSelectedRowId(row.original.id);
+                  onRowClick(row.original);
+                }}
+              >
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()} className={classes.dynamicCell}>
+                    {cell.render("Cell")}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
