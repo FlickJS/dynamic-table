@@ -23,8 +23,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ onRowClick }) => {
   useEffect(() => {
     const getData = async () => {
       const result = await fetchData();
-      if (result.error) {
-        setError("FAILED TO FETCH DATA");
+      if (
+        result.error &&
+        typeof result.error === "object" &&
+        "message" in result.error
+      ) {
+        console.log(result.error.message);
+        setError(result.error.message as string);
       } else if (result.data) {
         setData(result.data);
       }

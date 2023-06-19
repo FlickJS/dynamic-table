@@ -5,12 +5,6 @@ export const fetchData = async () => {
     const response = await axios.get(
       "https://www.googleapis.com/books/v1/volumes?q=react"
     );
-
-    if (response.status !== 200) {
-      throw new Error(
-        `Error: ${response.statusText} - Status: ${response.status}`
-      );
-    }
     return {
       data: response.data.items.map((bookData: any) => ({
         id: bookData.id,
